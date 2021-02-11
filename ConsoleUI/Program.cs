@@ -20,21 +20,21 @@ namespace ConsoleUI
 
         private static void BrandTest()
         {
-            Brand brand1 = new Brand() { BrandName = "TESLA" };
-            Brand brand2 = new Brand() { Id = 9, BrandName = "Tesla" };
+            //Brand brand1 = new Brand() { BrandName = "TESLA" };
+            //Brand brand2 = new Brand() { Id = 9, BrandName = "Tesla" };
 
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            brandManager.Add(brand1);
+            //brandManager.Add(brand1);
 
-            Console.WriteLine(brandManager.GetById(9).BrandName);
+            //Console.WriteLine(brandManager.GetById(9).Data.BrandName);
 
-            brandManager.Update(brand2);
+            //brandManager.Update(brand2);
 
-            Console.WriteLine(brandManager.GetById(9).BrandName);
+            //Console.WriteLine(brandManager.GetById(9).Data.BrandName);
 
-            brandManager.Delete(brand2);
+            //brandManager.Delete(brand2);
 
-            foreach (var item in brandManager.GetAll())
+            foreach (var item in brandManager.GetAll().Data)
             {
                 Console.WriteLine($"Id: {item.Id} - Name: {item.BrandName}");
             }
@@ -42,21 +42,21 @@ namespace ConsoleUI
 
         private static void ColorTest()
         {
-            Color color1 = new Color() { ColorName = "Indian red" };
-            Color color2 = new Color() { Id = 15, ColorName = "Indian red" };
+            //Color color1 = new Color() { ColorName = "Indian red" };
+            //Color color2 = new Color() { Id = 15, ColorName = "Indian red" };
 
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            colorManager.Add(color1);
+            //colorManager.Add(color1);
 
-            Console.WriteLine(colorManager.GetById(15).ColorName);
+            //Console.WriteLine(colorManager.GetById(15).Data.ColorName);
 
-            colorManager.Update(color2);
+            //colorManager.Update(color2);
 
-            Console.WriteLine(colorManager.GetById(15).ColorName);
+            //Console.WriteLine(colorManager.GetById(15).Data.ColorName);
 
-            colorManager.Delete(color2);
+            //colorManager.Delete(color2);
 
-            foreach (var item in colorManager.GetAll())
+            foreach (var item in colorManager.GetAll().Data)
             {
                 Console.WriteLine($"Id: {item.Id} - Name: {item.ColorName}");
             }
@@ -64,23 +64,26 @@ namespace ConsoleUI
 
         private static void CarTest()
         {
-            Car car1 = new Car() { BrandId = 3, ColorId = 5, ModelYear = 1934, DailyPrice = 150, Description = "Car Description 0" };
-            Car newCar = new Car() { BrandId = 3, ColorId = 6, ModelYear = 1934, DailyPrice = 150, Description = "Updated Car Description 0" };
+            //Car car1 = new Car() { BrandId = 3, ColorId = 5, ModelYear = 1934, DailyPrice = 150, Description = "Car Description 0" };
+            //Car newCar = new Car() { Id = 11,BrandId = 4, ColorId = 6, ModelYear = 1934, DailyPrice = 150, Description = "Updated Car Description 0" };
 
             CarManager carManager = new CarManager(new EfCarDal());
 
-            carManager.Add(car1);
+            //var result = carManager.Add(car1);
+            //Console.WriteLine(result.Message);
 
-            carManager.Update(newCar);
+            //carManager.Update(newCar);
 
-            carManager.Delete(car1);
+            //var deleteResult = carManager.Delete(newCar);
+            //Console.WriteLine(deleteResult.Message);
 
-            foreach (var item in carManager.GetAll())
+            foreach (var item in carManager.GetAll().Data)
             {
                 Console.WriteLine($"Id: {item.Id} - Açıklama: {item.Description}");
             }
 
-            var car = carManager.GetById(3);
+
+            var car = carManager.GetById(3).Data;
             Console.WriteLine($"Car Description: {car.Description} - Brand Id: {car.BrandId} - Color Id: {car.ColorId}" +
                     $" - Daily Price: {car.DailyPrice} - Model Year: {car.ModelYear}");
         }
