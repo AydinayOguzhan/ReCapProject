@@ -15,7 +15,36 @@ namespace ConsoleUI
             //CarTest();
             //ColorTest();
             //BrandTest();
+            //CustomerTest();
 
+            //TODO: ReturnDate must be null if the car hasn't been returned.
+
+            //DateTime? returnDate = null;
+            Rental rental = new Rental() { CarId = 3, CustomerId = 1, RentDate = DateTime.Now};
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result = rentalManager.Add(rental);
+            Console.WriteLine(result.Message);
+
+            //var result = rentalManager.GetRentalDetailByCarId(2);
+            //Console.WriteLine(result.Message);
+            //Console.WriteLine(result.Data.ReturnDate);
+
+        }
+
+        private static void CustomerTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+
+            var result = customerManager.GetCustomerDetailByLastName("Aydınay");
+            Console.WriteLine(result.Data.CompanyName + " : " + result.Data.FirstName + " : " + result.Data.LastName);
+
+            //var result = customerManager.GetAllCustomerDetail();
+            //Console.WriteLine(result.Message);
+            //foreach (var item in result.Data)
+            //{
+            //    Console.WriteLine($"First Name: {item.FirstName} - Last Name: {item.LastName} - Company Name: {item.CompanyName}");
+            //}
         }
 
         private static void BrandTest()

@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Core.Utilities.Results;
+using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
@@ -11,7 +12,7 @@ namespace Business.Concrete
 {
     public class ColorManager : IColorService
     {
-        EfColorDal _colorDal;
+        IColorDal _colorDal;
 
         public ColorManager(EfColorDal colorDal)
         {
