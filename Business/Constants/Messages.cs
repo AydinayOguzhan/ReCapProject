@@ -51,5 +51,9 @@ namespace Business.Constants
         public static string RentalsListed = "Kiralama bilgileri listelendi";
         public static string RentalListed = "Kiralama bilgisi listelendi";
         public static string InvalidReturnDate = "Araç dönüş tarihi kiralamaya uygun değildir";
+        
+        
+        public static string CarPhotoLimitExceded = "Araç başına sadece 5 adet fotoğraf ekleyebilirsiniz";
+        public static string ThereIsNoPhoto = "Böyle bir fotoğraf bulunmamaktadır";
     }
 }
