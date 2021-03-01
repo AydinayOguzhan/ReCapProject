@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Utilities.Results
 {
-    class ErrorDataResult<T>:DataResult<T>
+    public class ErrorDataResult<T>:DataResult<T>
     {
         public ErrorDataResult(T Data, string message):base(Data,false,message)
         {

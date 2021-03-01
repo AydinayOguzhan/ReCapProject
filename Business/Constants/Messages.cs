@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -51,8 +52,16 @@ namespace Business.Constants
         public static string RentalsListed = "Kiralama bilgileri listelendi";
         public static string RentalListed = "Kiralama bilgisi listelendi";
         public static string InvalidReturnDate = "Araç dönüş tarihi kiralamaya uygun değildir";
-        
-        
+
+        public static string Successful = "İşlem başarılı";
+        public static string Unsuccessful = "İşlem başarısız";
+        public static string UserNotFound = "Kullanıcı bulunamadı";
+        public  static string PasswordError = "Şifre hatalı";
+        public static string UserAlreadyExists = "Kullanıcı halihazırda mevcut";
+        public static string UserRegistered = "Kullanıcı başarıyla oluşturuldu";
+        public static string AccessTokenCreated = "Access token oluşturuldu";
+
+
         public static string CarPhotoLimitExceded = "Araç başına sadece 5 adet fotoğraf ekleyebilirsiniz";
         public static string ThereIsNoPhoto = "Böyle bir fotoğraf bulunmamaktadır";
     }
