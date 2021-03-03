@@ -10,9 +10,9 @@ namespace Business.Abstract
     {
         IDataResult<List<User>> GetAll();
         IDataResult<User> GetById(int id);
-        Result Add(User user);
-        Result Update(User user);
-        Result Delete(User user);
+        IResult Add(User user);
+        IResult Update(User user);
+        IResult Delete(User user);
 
         IDataResult<User> GetUserByMail(string email);
         IDataResult<List<OperationClaim>> GetClaims(User user);

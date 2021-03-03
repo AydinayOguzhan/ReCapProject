@@ -1,6 +1,7 @@
 ﻿using Core.Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -60,6 +61,7 @@ namespace Business.Constants
         public static string UserAlreadyExists = "Kullanıcı halihazırda mevcut";
         public static string UserRegistered = "Kullanıcı başarıyla oluşturuldu";
         public static string AccessTokenCreated = "Access token oluşturuldu";
+        public static string AuthorizationDenied = "Yetkilendirme reddedildi";
 
 
         public static string CarPhotoLimitExceded = "Araç başına sadece 5 adet fotoğraf ekleyebilirsiniz";
