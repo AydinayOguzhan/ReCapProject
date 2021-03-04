@@ -1,5 +1,6 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.Extensions;
 using Core.Utilities.IOC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Jwt;
@@ -19,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.DenedencyResolvers;
 
 namespace WebAPI
 {
@@ -34,8 +36,6 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddControllers();
 
             services.AddCors(options =>
@@ -58,7 +58,9 @@ namespace WebAPI
                     IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                 };
             });
-            ServiceTool.Create(services);
+
+            services.AddDependencyResolvers(new CoreModule());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
