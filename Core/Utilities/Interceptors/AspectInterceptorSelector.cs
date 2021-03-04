@@ -18,6 +18,8 @@ namespace Core.Utilities.Interceptors
                 .GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
             classAttributes.AddRange(methodAttributes);
 
+            //Aspectleri buraya add ile eklersen, proje içinde eklenmiş ve eklenebilecek bütün metotlarda çalışır.
+            //classAttributes.Add(new ExceptionLogAspect(typeof(FileLogger)));
             classAttributes.Add(new PerformanceAspect(5));
 
             return classAttributes.OrderBy(x => x.Priority).ToArray();
