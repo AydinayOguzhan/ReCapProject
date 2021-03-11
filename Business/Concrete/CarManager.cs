@@ -14,6 +14,7 @@ using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Business.Concrete
 {
@@ -48,11 +49,12 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
-        [SecuredOperations("Product.List")]
+        //[SecuredOperations("Product.List")]
         public IDataResult<List<Car>> GetAll()
         {
+            //Sleep method for 5 seconds
+            //Thread.Sleep(5000);
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
-
         }
 
         [CacheAspect]
