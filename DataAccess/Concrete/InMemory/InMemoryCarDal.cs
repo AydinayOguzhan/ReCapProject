@@ -57,7 +57,17 @@ namespace DataAccess.Concrete.InMemory
             throw new NotImplementedException();
         }
 
+        public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<CarDetailDto> GetCarDetailsByBrandId(int brandId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetCarDetailsByColorId(int colorId)
         {
             throw new NotImplementedException();
         }
@@ -75,6 +85,11 @@ namespace DataAccess.Concrete.InMemory
             result.DailyPrice = car.DailyPrice;
             result.Description = car.Description;
             result.ModelYear = car.ModelYear;
+        }
+
+        List<CarDetailDto> ICarDal.GetCarDetailsById(int carId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

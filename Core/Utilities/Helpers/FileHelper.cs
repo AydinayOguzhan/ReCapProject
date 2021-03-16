@@ -1,54 +1,51 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Utilities.Results;
+using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Core.Utilities.Helpers
 {
     public class FileHelper
     {
-        public static string Add(IFormFile file)
+        private static string currentDirectory = Environment.CurrentDirectory + @"\wwwroot";
+        private static string path = @"\images\";
+
+        public static IResult Add(IFormFile file)
         {
-            var sourcepath = Path.GetTempFileName();
             if (file.Length > 0)
             {
-                using (var stream = new FileStream(sourcepath, FileMode.Create))
+                var guidName = Guid.NewGuid().ToString();
+                var type = Path.GetExtension(file.FileName);
+
+                using (FileStream fileStream = File.Create(currentDirectory + path + guidName + type))
                 {
-                    file.CopyTo(stream);
+                    file.CopyTo(fileStream);
+                    fileStream.Flush();
                 }
+                return new SuccessResult(guidName + type);
             }
-            var result = newPath(file);
-            File.Move(sourcepath, result);
-            return result;
+            return new ErrorResult();
         }
-        public static void Delete(string path)
+
+        public static IResult Delete(string file)
         {
-            File.Delete(path);
+            File.Delete(currentDirectory + path + file);
+            return new SuccessResult();
         }
-        public static string Update(string sourcePath, IFormFile file)
+
+        public static IResult Update(IFormFile file, string imagePath)
         {
-            var result = newPath(file);
-            if (sourcePath.Length > 0)
+            if (file.Length > 0)
             {
-                using (var stream = new FileStream(result, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                var guidName = Guid.NewGuid().ToString();
+                var type = Path.GetExtension(file.FileName);
+                FileHelper.Delete(imagePath);
+                FileHelper.Add(file);
+
+                return new SuccessResult();
             }
-            File.Delete(sourcePath);
-            return result;
+            return new ErrorResult();
         }
-        public static string newPath(IFormFile file)
-        {
-            FileInfo ff = new FileInfo(file.FileName);
-            string fileExtension = ff.Extension;
 
-            string path = Environment.CurrentDirectory + @"\Uploads";
-            var newPath = Guid.NewGuid().ToString() + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Year + fileExtension;
-
-            string result = $@"{path}\{newPath}";
-            return result;
-        }
     }
 }

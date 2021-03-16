@@ -6,6 +6,7 @@ using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -13,6 +14,7 @@ using Entities.DTOs;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -74,6 +76,17 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandId(brandId), Messages.CarsListed);
         }
 
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByColorId(colorId), Messages.CarsListed);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsById(int carId)
+        {
+            //return new SuccessDataResult<List<CarDetailDto>>(CheckIfCarHasPhoto(carId), Messages.CarsListed);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsById(carId));
+        }
+
         [CacheAspect]
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
@@ -92,6 +105,23 @@ namespace Business.Concrete
         {
             _carDal.Update(car);
             return new SuccessResult(Messages.CarUpdated);
+        }
+
+
+        private List<CarDetailDto> CheckIfCarHasPhoto(int carId)
+        {
+            string path = @"\default.png";
+            var result = _carDal.GetCarDetailsById(carId).Any();
+            if (!result)
+            {
+                var newCarDetailDto = _carDal.GetCarDetails(c => c.CarId == carId).FirstOrDefault();
+                return new List<CarDetailDto> { new CarDetailDto {
+                    CarId = newCarDetailDto.CarId,BrandName = newCarDetailDto.BrandName, CarDescription = newCarDetailDto.CarDescription,
+                    ColorName = newCarDetailDto.ColorName, DailyPrice = newCarDetailDto.DailyPrice, Date = newCarDetailDto.Date,
+                    ModelYear = newCarDetailDto.ModelYear, ImagePath = path
+                } };
+            }
+            return _carDal.GetCarDetailsById(carId);
         }
     }
 }
