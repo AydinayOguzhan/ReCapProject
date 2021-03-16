@@ -60,8 +60,8 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetById(int id)
         {
-            var result = _carImageDal.Get(c => c.Id == id);
-            if (result==null)
+            var result = _carImageDal.GetAll(c => c.Id == id);
+            if (result.Count <= 0)
             {
                 List<CarImage> Cimage = new List<CarImage>();
                 Cimage.Add(new CarImage { CarId = id, ImagePath = @"default.jpg" });
@@ -72,8 +72,8 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetByCarId(int id)
         {
-            var result = _carImageDal.Get(c => c.CarId == id);
-            if (result == null)
+            var result = _carImageDal.GetAll(c => c.CarId == id);
+            if (result.Count <= 0)
             {
                 List<CarImage> Cimage = new List<CarImage>();
                 Cimage.Add(new CarImage { CarId = id, ImagePath = @"default.jpg" });
