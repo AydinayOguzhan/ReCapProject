@@ -16,8 +16,9 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(c => c.CardSecurityNumber).NotEmpty();
             RuleFor(c => c.CardName).NotEmpty();
 
-            RuleFor(c => c.CardNumber).MaximumLength(16);
+            RuleFor(c => c.CardNumber).Must(x => x.ToString().Length == 16);
             RuleFor(c => c.CardYear).GreaterThan(DateTime.Now.AddYears(-1).Year);
         }
+
     }
 }
