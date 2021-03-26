@@ -41,12 +41,12 @@ namespace Core.Extensions
             {
                 message = e.Message;
                 errors = ((ValidationException)e).Errors;
-                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest; // 400
+                httpContext.Response.StatusCode = 400; // 400
 
                 return httpContext.Response.WriteAsync(new ValidationErrorDetails
                 {
-                    Message = message,
                     StatusCode = 400,
+                    Message = message,
                     ValidationErrors = errors
                 }.ToString());
             }
