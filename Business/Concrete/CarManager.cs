@@ -29,6 +29,7 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [SecuredOperations("admin")]
         [CacheRemoveAspect("ICarService.Get")]
         [ValidationAspect(typeof(CarValidator))]
         [TransactionScopeAspect]
@@ -38,6 +39,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
 
+        [SecuredOperations("admin")]
         [TransactionScopeAspect]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
@@ -54,8 +56,6 @@ namespace Business.Concrete
         //[SecuredOperations("Product.List")]
         public IDataResult<List<Car>> GetAll()
         {
-            //Sleep method for 5 seconds
-            //Thread.Sleep(5000);
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
 
@@ -104,6 +104,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarsListed);
         }
 
+        [SecuredOperations("admin")]
         [TransactionScopeAspect]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)

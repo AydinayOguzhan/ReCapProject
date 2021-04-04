@@ -44,7 +44,19 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(userExists);
             }
-            var registerResult = _authService.Register(userForRegisterDto,userForRegisterDto.Password);
+            var registerResult = _authService.Register(userForRegisterDto);
+            var result = _authService.CreateAccessToken(registerResult.Data);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpPost("update")]
+        public IActionResult Update(UserForUpdateDto userForUpdateDto)
+        {
+            var registerResult = _authService.Update(userForUpdateDto);
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (!result.Success)
             {

@@ -24,7 +24,6 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public Result Add(Rental rental)
         {
-
             var rentalDetail = _rentalDal.GetRentalDetailByCarId(rental.CarId);
             if (rentalDetail != null)
             {
@@ -39,7 +38,6 @@ namespace Business.Concrete
             }
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentedCar);
-
 
         }
 

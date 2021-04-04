@@ -10,8 +10,9 @@ namespace Business.Abstract
 {
     public interface IAuthService
     {
-        IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password);
+        IDataResult<User> Register(UserForRegisterDto userForRegisterDto);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
+        IDataResult<User> Update(UserForUpdateDto userForUpdateDto);
         IResult UserExists(string email);
         IDataResult<AccessToken> CreateAccessToken(User user);
     }
