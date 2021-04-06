@@ -1,5 +1,5 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
+using Core.Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,19 +11,19 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class UserOperationClaimsController : ControllerBase
     {
-        ICustomerService _customerService;
+        IUserOperationClaimService _userOperationClaimService;
 
-        public CustomersController(ICustomerService customerService)
+        public UserOperationClaimsController(IUserOperationClaimService userOperationClaimService)
         {
-            _customerService = customerService;
+            _userOperationClaimService = userOperationClaimService;
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            var result = _customerService.GetAll();
+            var result = _userOperationClaimService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
-            var result = _customerService.GetById(id);
+            var result = _userOperationClaimService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -42,10 +42,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getallcustomerdetail")]
-        public IActionResult GetAllCustomerDetail()
+        [HttpGet("getbyuserid")]
+        public IActionResult GetByUserId(int userId)
         {
-            var result = _customerService.GetAllCustomerDetail();
+            var result = _userOperationClaimService.GetById(userId);
             if (result.Success)
             {
                 return Ok(result);
@@ -53,34 +53,21 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getcustomerdetailbylastname")]
-        public IActionResult GetCustomerDetailByLastName(string lastName)
+        [HttpGet("checkifitsadmin")]
+        public IActionResult CheckIfItsAdmin(int userId)
         {
-            var result = _customerService.GetCustomerDetailByLastName(lastName);
+            var result = _userOperationClaimService.CheckIfItsAdmin(userId);
             if (result.Success)
             {
                 return Ok(result);
             }
-            return BadRequest(result);
+            return Ok(result);
         }
-
-        [HttpGet("getcustomerdetailbyuserid")]
-        public IActionResult GetCustomerDetailByUserId(int userId)
-        {
-            var result = _customerService.GetCustomerDetailByUserId(userId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-
 
         [HttpPost("add")]
-        public IActionResult Add(Customer customer)
+        public IActionResult Add(UserOperationClaim userOperationClaim)
         {
-            var result = _customerService.Add(customer);
+            var result = _userOperationClaimService.Add(userOperationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -89,9 +76,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(Customer customer)
+        public IActionResult Delete(UserOperationClaim userOperationClaim)
         {
-            var result = _customerService.Delete(customer);
+            var result = _userOperationClaimService.Delete(userOperationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -100,9 +87,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(Customer customer)
+        public IActionResult Update(UserOperationClaim userOperationClaim)
         {
-            var result = _customerService.Update(customer);
+            var result = _userOperationClaimService.Update(userOperationClaim);
             if (result.Success)
             {
                 return Ok(result);

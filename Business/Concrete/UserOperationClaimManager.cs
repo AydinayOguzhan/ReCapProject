@@ -5,6 +5,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 
@@ -25,6 +26,22 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Successful);
         }
 
+        public IResult CheckIfItsAdmin(int userId)
+        {
+            int adminClaimId = 1;
+            var claims = _userOperationClaimDal.GetAll(u => u.UserId == userId);
+            if (claims == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            var adminClaim = claims.SingleOrDefault(c => c.Id == adminClaimId);
+            if (adminClaim == null)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
+
         public IResult Delete(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Delete(userOperationClaim);
@@ -39,6 +56,11 @@ namespace Business.Concrete
         public IDataResult<UserOperationClaim> GetById(int id)
         {
             return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(u => u.Id == id));
+        }
+
+        public IDataResult<List<UserOperationClaim>> GetByUserId(int userId)
+        {
+            return new SuccessDataResult<List<UserOperationClaim>>(_userOperationClaimDal.GetAll(u => u.UserId == userId));
         }
 
         public IResult Update(UserOperationClaim userOperationClaim)

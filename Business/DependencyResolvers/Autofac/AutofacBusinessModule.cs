@@ -44,6 +44,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CreditCardInformationManager>().As<ICreditCardInformationService>().SingleInstance();
             builder.RegisterType<EfCreditCardInformationDal>().As<ICreditCardInformationDal>().SingleInstance();
 
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
+
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

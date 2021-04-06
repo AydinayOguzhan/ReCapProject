@@ -12,5 +12,6 @@ namespace DataAccess.Abstract
     {
         List<CustomerDetailDto> GetAllCustomerDetail();
         CustomerDetailDto GetCustomerDetailByLastName(string lastName);
+        CustomerDetailDto GetCustomerDetailByUserId(int userId);
     }
 }

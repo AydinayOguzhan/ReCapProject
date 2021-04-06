@@ -9,5 +9,6 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserOperationClaimDal:EfEntityRepositoryBase<UserOperationClaim,ReCapProjectContext>,IUserOperationClaimDal
     {
+        
     }
 }
