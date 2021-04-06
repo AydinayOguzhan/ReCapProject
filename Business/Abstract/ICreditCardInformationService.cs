@@ -13,7 +13,9 @@ namespace Business.Abstract
         IResult Delete(CreditCardInformation creditCardInformation);
 
         IDataResult<List<CreditCardInformation>> GetAll();
-        IDataResult<List<CreditCardInformation>> GetByUserId(int userId);
+        IDataResult<CreditCardInformation> GetByUserId(int userId);
         IDataResult<CreditCardInformation> GetById(int id);
+
+        IResult CheckIfCreditCardLegit(CreditCardInformation creditCardInformation);
     }
 }

@@ -9,7 +9,7 @@ namespace Entities.Concrete
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int CardNumber { get; set; }
+        public string CardNumber { get; set; }
         public string CardName { get; set; }
         public int CardMonth { get; set; }
         public int CardYear { get; set; }

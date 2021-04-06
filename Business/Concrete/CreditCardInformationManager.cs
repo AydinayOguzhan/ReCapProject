@@ -3,6 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,15 +19,38 @@ namespace Business.Concrete
 
         public CreditCardInformationManager(ICreditCardInformationDal creditCardInformationDal)
         {
-            this._creditCardInformationDal = creditCardInformationDal;
+            _creditCardInformationDal = creditCardInformationDal;
         }
 
         [TransactionScopeAspect]
         [ValidationAspect(typeof(CreditCardValidator))]
         public IResult Add(CreditCardInformation creditCardInformation)
         {
-            _creditCardInformationDal.Add(creditCardInformation);
+            var result = BusinessRules.Run(CheckIfHasCard(creditCardInformation.UserId));
+            if (result != null)
+            {
+                _creditCardInformationDal.Add(creditCardInformation);
+                return new SuccessResult(Messages.Successful);
+            }
+            var oldCreditCard = _creditCardInformationDal.Get(c => c.UserId == creditCardInformation.UserId);
+            CreditCardInformation newCreditCard = new CreditCardInformation()
+            {
+                Id = oldCreditCard.Id,
+                UserId = creditCardInformation.UserId,
+                CardMonth = creditCardInformation.CardMonth,
+                CardName = creditCardInformation.CardName,
+                CardNumber = creditCardInformation.CardNumber,
+                CardSecurityNumber = creditCardInformation.CardSecurityNumber,
+                CardYear = creditCardInformation.CardYear
+            };
+            _creditCardInformationDal.Update(newCreditCard);
             return new SuccessResult(Messages.Successful);
+        }
+
+        [ValidationAspect(typeof(CreditCardValidator))]
+        public IResult CheckIfCreditCardLegit(CreditCardInformation creditCardInformation)
+        {
+            return new SuccessResult();
         }
 
         [TransactionScopeAspect]
@@ -46,9 +70,9 @@ namespace Business.Concrete
             return new SuccessDataResult<CreditCardInformation>(_creditCardInformationDal.Get(c => c.Id == id));
         }
 
-        public IDataResult<List<CreditCardInformation>> GetByUserId(int userId)
+        public IDataResult<CreditCardInformation> GetByUserId(int userId)
         {
-            return new SuccessDataResult<List<CreditCardInformation>>(_creditCardInformationDal.GetAll(c => c.UserId == userId));
+            return new SuccessDataResult<CreditCardInformation>(_creditCardInformationDal.Get(c => c.UserId == userId));
         }
 
         [TransactionScopeAspect]
@@ -56,6 +80,16 @@ namespace Business.Concrete
         {
             _creditCardInformationDal.Update(creditCardInformation);
             return new SuccessResult(Messages.Successful);
+        }
+
+        private IResult CheckIfHasCard(int userId)
+        {
+            var result = _creditCardInformationDal.Get(c => c.UserId == userId);
+            if (result != null)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
     }
 }

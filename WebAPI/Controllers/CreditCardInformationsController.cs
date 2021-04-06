@@ -86,5 +86,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        
+        [HttpPost("checkifcreditcardlegit")]
+        public IActionResult CheckIfCreditCardLegit(CreditCardInformation creditCard)
+        {
+            creditCard.CardYear += 2000;
+            var result = _creditCardInformationService.CheckIfCreditCardLegit(creditCard);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }
