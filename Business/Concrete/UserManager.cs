@@ -23,6 +23,8 @@ namespace Business.Concrete
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
+            int defaultFindex = 500;
+            user.Findex = defaultFindex;
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }

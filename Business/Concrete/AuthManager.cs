@@ -45,6 +45,7 @@ namespace Business.Concrete
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
+            int defaultFindex = 500;
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password,out passwordHash,out passwordSalt);
             var user = new User
@@ -54,7 +55,8 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                Status = true,
+                Findex = defaultFindex
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);

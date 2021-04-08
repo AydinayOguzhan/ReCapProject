@@ -44,10 +44,10 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
-            if (DateTime.Now.Hour == 12)
-            {
-                return new ErrorResult(Messages.MaintenanceTime);
-            }
+            //if (DateTime.Now.Hour == 12)
+            //{
+            //    return new ErrorResult(Messages.MaintenanceTime);
+            //}
             _carDal.Delete(car);
             return new SuccessResult(Messages.CarDeleted);
         }

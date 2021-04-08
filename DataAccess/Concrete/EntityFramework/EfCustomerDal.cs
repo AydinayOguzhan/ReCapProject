@@ -67,7 +67,8 @@ namespace DataAccess.Concrete.EntityFramework
                                   Email = u.Email,
                                   FirstName = u.FirstName,
                                   LastName = u.LastName,
-                                  UserId = u.Id
+                                  UserId = u.Id,
+                                  Findex = u.Findex
                               }).FirstOrDefault();
                 return result;
             }

@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -15,33 +16,32 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
+        IUserService _userService;
+        ICustomerService _customerService;
+        ICarService _carService;
 
-        public RentalManager(IRentalDal rentalDal)
+        public RentalManager(IRentalDal rentalDal, IUserService userService, ICustomerService customerService, ICarService carService)
         {
             _rentalDal = rentalDal;
+            _userService = userService;
+            _customerService = customerService;
+            _carService = carService;
         }
 
         [ValidationAspect(typeof(RentalValidator))]
-        public Result Add(Rental rental)
+        public IResult Add(Rental rental)
         {
-            var rentalDetail = _rentalDal.GetRentalDetailByCarId(rental.CarId);
-            if (rentalDetail != null)
+            var result = BusinessRules.Run(IsFindexEnough(rental), CanItBeRented(rental));
+            if (result != null)
             {
-                if (rentalDetail.ReturnDate == null)
-                {
-                    return new ErrorResult(Messages.InvalidReturnDate);
-                }
-                else if (rentalDetail.ReturnDate >= DateTime.Now)
-                {
-                    return new ErrorResult(Messages.InvalidReturnDate);
-                }
+                return new ErrorResult("Kiralanırken hata oluştu. Lütfen findex puanınızı ve return date i kontrol ediniz");
             }
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentedCar);
 
         }
 
-        public Result Delete(Rental rental)
+        public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
             return new SuccessResult(Messages.RentalDeleted);
@@ -77,10 +77,33 @@ namespace Business.Concrete
             return new SuccessDataResult<RentalDetailDto>(_rentalDal.GetRentalDetailByCarId(carId), Messages.RentalListed);
         }
 
-        public Result Update(Rental rental)
+        public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.RentalUpdated);
+        }
+
+        private IResult IsFindexEnough(Rental rental)
+        {
+            var userId = _customerService.GetById(rental.CustomerId).Data.UserId;
+            var userFindex = _userService.GetById(userId).Data.Findex;
+            var carFindex = _carService.GetById(rental.CarId).Data.Findex;
+            if (userFindex < carFindex)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CanItBeRented(Rental rental)
+        {
+            var result = _rentalDal.GetRentalDetailByCarId(rental.CarId);
+
+            if (result == null || result.RentDate == null || result.ReturnDate != null || rental.ReturnDate <= DateTime.Now)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
     }
 }

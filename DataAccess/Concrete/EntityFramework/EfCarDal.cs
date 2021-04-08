@@ -30,7 +30,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarDescription = car.Description,
                                  ColorName = color.ColorName,
                                  DailyPrice = car.DailyPrice,
-                                 ModelYear = car.ModelYear
+                                 ModelYear = car.ModelYear,
+                                 Findex = car.Findex
                              }).FirstOrDefault();
 
                 return result;
@@ -47,7 +48,7 @@ namespace DataAccess.Concrete.EntityFramework
                              join color in context.Color
                              on car.ColorId equals color.Id
                              select new CarDetailDto() {CarId = car.Id, BrandName = brand.BrandName, CarDescription = car.Description , 
-                                 ColorName = color.ColorName, DailyPrice = car.DailyPrice,ModelYear=car.ModelYear,};
+                                 ColorName = color.ColorName, DailyPrice = car.DailyPrice,ModelYear=car.ModelYear,Findex=car.Findex};
 
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }
@@ -70,7 +71,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarDescription = car.Description,
                                  ColorName = color.ColorName,
                                  DailyPrice = car.DailyPrice,
-                                 ModelYear = car.ModelYear
+                                 ModelYear = car.ModelYear,
+                                 Findex = car.Findex
                              };
 
                 return result.ToList();
@@ -94,7 +96,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarDescription = car.Description,
                                  ColorName = color.ColorName,
                                  DailyPrice = car.DailyPrice,
-                                 ModelYear = car.ModelYear
+                                 ModelYear = car.ModelYear,
+                                 Findex = car.Findex
                              };
 
                 return result.ToList();
@@ -121,6 +124,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  ColorName = color.ColorName,
                                  DailyPrice = car.DailyPrice,
                                  ModelYear = car.ModelYear,
+                                 Findex = car.Findex,
                                  ImagePath = image.ImagePath,
                                  Date = image.Date
                              };
