@@ -83,6 +83,11 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalUpdated);
         }
 
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByUserId(int userId)
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailsByUserId(userId));
+        }
+
         private IResult IsFindexEnough(Rental rental)
         {
             var userId = _customerService.GetById(rental.CustomerId).Data.UserId;
@@ -105,5 +110,6 @@ namespace Business.Concrete
             }
             return new ErrorResult();
         }
+
     }
 }

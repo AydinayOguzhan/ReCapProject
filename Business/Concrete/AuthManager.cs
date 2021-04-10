@@ -45,6 +45,11 @@ namespace Business.Concrete
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
+            var result = _userService.GetUserByMail(userForRegisterDto.Email);
+            if (!result.Success)
+            {
+                return new ErrorDataResult<User>(Messages.UserAlreadyExists);
+            }
             int defaultFindex = 500;
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password,out passwordHash,out passwordSalt);
