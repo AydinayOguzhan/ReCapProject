@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Aspects.Autofac.Transaction;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
@@ -43,6 +44,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck.Data, Messages.Successful);
         }
 
+        [TransactionScopeAspect]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
             var result = _userService.GetUserByMail(userForRegisterDto.Email);
@@ -67,6 +69,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        [TransactionScopeAspect]
         public IDataResult<User> Update(UserForUpdateDto userForUpdateDto)
         {
             byte[] passwordHash, passwordSalt;

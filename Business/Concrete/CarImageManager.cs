@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
@@ -26,6 +28,8 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [TransactionScopeAspect]
         public IResult Add(IFormFile file, CarImage carImage)
         {
             var result = BusinessRules.Run(CheckCarPhotoLimit(carImage.CarId));
@@ -41,6 +45,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Successful);
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [TransactionScopeAspect]
         public IResult Update(IFormFile file, CarImage carImage)
         {
             var result = _carImageDal.Get(c => c.Id == carImage.Id);
@@ -50,6 +56,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Successful);
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
+        [TransactionScopeAspect]
         public IResult Delete(CarImage carImage)
         {
             var result = _carImageDal.Get(c => c.Id == carImage.Id);
@@ -58,6 +66,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Successful);
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetById(int id)
         {
             var result = _carImageDal.GetAll(c => c.Id == id);
@@ -70,6 +79,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.Id == id));
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetByCarId(int id)
         {
             var result = _carImageDal.GetAll(c => c.CarId == id);
@@ -82,6 +92,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == id));
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());

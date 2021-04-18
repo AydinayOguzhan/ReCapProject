@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
@@ -22,6 +23,7 @@ namespace Business.Concrete
             _creditCardInformationDal = creditCardInformationDal;
         }
 
+        [CacheRemoveAspect("ICreditCardInformationService.Get")]
         [TransactionScopeAspect]
         [ValidationAspect(typeof(CreditCardValidator))]
         public IResult Add(CreditCardInformation creditCardInformation)
@@ -54,28 +56,33 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
+        [CacheRemoveAspect("ICreditCardInformationService.Get")]
         public IResult Delete(CreditCardInformation creditCardInformation)
         {
             _creditCardInformationDal.Delete(creditCardInformation);
             return new SuccessResult(Messages.Successful);
         }
 
+        [CacheAspect]
         public IDataResult<List<CreditCardInformation>> GetAll()
         {
             return new SuccessDataResult<List<CreditCardInformation>>(_creditCardInformationDal.GetAll());
         }
 
+        [CacheAspect]
         public IDataResult<CreditCardInformation> GetById(int id)
         {
             return new SuccessDataResult<CreditCardInformation>(_creditCardInformationDal.Get(c => c.Id == id));
         }
 
+        [CacheAspect]
         public IDataResult<CreditCardInformation> GetByUserId(int userId)
         {
             return new SuccessDataResult<CreditCardInformation>(_creditCardInformationDal.Get(c => c.UserId == userId));
         }
 
         [TransactionScopeAspect]
+        [CacheRemoveAspect("ICreditCardInformationService.Get")]
         public IResult Update(CreditCardInformation creditCardInformation)
         {
             _creditCardInformationDal.Update(creditCardInformation);

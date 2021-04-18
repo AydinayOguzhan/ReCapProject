@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -23,6 +25,8 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
+        [CacheRemoveAspect("ICustomerService.Get")]
+        [TransactionScopeAspect]
         [ValidationAspect(typeof(CustomerValidator))]
         public Result Add(Customer customer)
         {
@@ -30,37 +34,46 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CustomerAdded);
         }
 
+        [CacheRemoveAspect("ICustomerService.Get")]
+        [TransactionScopeAspect]
         public Result Delete(Customer customer)
         {
             _customerDal.Delete(customer);
             return new SuccessResult(Messages.CustomerDeleted);
         }
 
+        [CacheAspect]
         public IDataResult<List<Customer>> GetAll()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(), Messages.CustomersListed);
         }
 
+        [CacheAspect]
         public IDataResult<List<CustomerDetailDto>> GetAllCustomerDetail()
         {
             return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetAllCustomerDetail(),Messages.CustomersListed);
         }
 
+        [CacheAspect]
         public IDataResult<Customer> GetById(int id)
         {
             return new SuccessDataResult<Customer>(_customerDal.Get(c => c.Id == id), Messages.CustomerListed);
         }
 
+        [CacheAspect]
         public IDataResult<CustomerDetailDto> GetCustomerDetailByLastName(string lastName)
         {
             return new SuccessDataResult<CustomerDetailDto>(_customerDal.GetCustomerDetailByLastName(lastName),Messages.CustomerListed);
         }
 
+        [CacheAspect]
         public IDataResult<CustomerDetailDto> GetCustomerDetailByUserId(int userId)
         {
             return new SuccessDataResult<CustomerDetailDto>(_customerDal.GetCustomerDetailByUserId(userId));
         }
 
+        [CacheRemoveAspect("ICustomerService.Get")]
+        [TransactionScopeAspect]
         public Result Update(Customer customer)
         {
             _customerDal.Update(customer);
