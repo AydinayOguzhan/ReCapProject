@@ -67,5 +67,7 @@ namespace Business.Constants
 
         public static string CarPhotoLimitExceded = "You can add 5 photos per car";
         public static string ThereIsNoPhoto = "Photo notBen de  found";
+
+        public static string ClaimAlreadyExist = "This claim is already exist";
     }
 }

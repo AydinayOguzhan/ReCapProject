@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Aspects.Autofac.Transaction;
 using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using System;
@@ -26,8 +27,13 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult Add(UserOperationClaim userOperationClaim)
         {
-            _userOperationClaimDal.Add(userOperationClaim);
-            return new SuccessResult(Messages.Successful);
+            var result = BusinessRules.Run(CheckIfClaimExist(userOperationClaim));
+            if (result == null)
+            {
+                _userOperationClaimDal.Add(userOperationClaim);
+                return new SuccessResult(Messages.Successful);
+            }
+            return new ErrorResult(Messages.ClaimAlreadyExist);
         }
 
         public IResult CheckIfItsAdmin(int userId)
@@ -75,6 +81,19 @@ namespace Business.Concrete
         {
             _userOperationClaimDal.Update(userOperationClaim);
             return new SuccessResult(Messages.Successful);
+        }
+
+        private IResult CheckIfClaimExist(UserOperationClaim userOperationClaim)
+        {
+            var result = _userOperationClaimDal.GetAll(c => c.UserId == userOperationClaim.UserId);
+            foreach (var item in result)
+            {
+                if (item.OperationClaimId == userOperationClaim.OperationClaimId)
+                {
+                    return new ErrorResult();
+                }
+            }
+            return new SuccessResult();
         }
     }
 }
