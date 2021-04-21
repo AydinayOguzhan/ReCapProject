@@ -61,6 +61,12 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
+        public IDataResult<Customer> GetCustomerByUserId(int userId)
+        {
+            return new SuccessDataResult<Customer>(_customerDal.Get(c => c.UserId == userId), Messages.CustomerListed);
+        }
+
+        [CacheAspect]
         public IDataResult<CustomerDetailDto> GetCustomerDetailByLastName(string lastName)
         {
             return new SuccessDataResult<CustomerDetailDto>(_customerDal.GetCustomerDetailByLastName(lastName),Messages.CustomerListed);
