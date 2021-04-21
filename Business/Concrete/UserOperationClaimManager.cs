@@ -6,6 +6,7 @@ using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.UserNotFound);
             }
-            var adminClaim = claims.SingleOrDefault(c => c.Id == adminClaimId);
+            var adminClaim = claims.SingleOrDefault(c => c.OperationClaimId == adminClaimId);
             if (adminClaim == null)
             {
                 return new ErrorResult();
@@ -94,6 +95,11 @@ namespace Business.Concrete
                 }
             }
             return new SuccessResult();
+        }
+
+        public IDataResult<List<UserOperationClaimDetailDto>> GetUserOperationClaimsByUserId(int userId)
+        {
+            return new SuccessDataResult<List<UserOperationClaimDetailDto>>(_userOperationClaimDal.GetUserOperationClaimDetailByUserId(userId));
         }
     }
 }

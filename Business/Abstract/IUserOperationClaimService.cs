@@ -1,5 +1,6 @@
 ﻿using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Business.Abstract
         IResult Update(UserOperationClaim userOperationClaim);
         IResult Delete(UserOperationClaim userOperationClaim);
         IResult CheckIfItsAdmin(int userId);
+        IDataResult<List<UserOperationClaimDetailDto>> GetUserOperationClaimsByUserId(int userId);
     }
 }
