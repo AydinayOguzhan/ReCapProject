@@ -4,6 +4,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -19,10 +20,12 @@ namespace Business.Concrete
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
+        IUserOperationClaimService _userOperationClaimService;
 
-        public CustomerManager(ICustomerDal customerDal)
+        public CustomerManager(ICustomerDal customerDal, IUserOperationClaimService userOperationClaimService)
         {
             _customerDal = customerDal;
+            _userOperationClaimService = userOperationClaimService;
         }
 
         [CacheRemoveAspect("ICustomerService.Get")]
@@ -30,7 +33,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CustomerValidator))]
         public Result Add(Customer customer)
         {
+            int userClaim = 2;
+            UserOperationClaim defaultUserClaims = new UserOperationClaim { OperationClaimId = userClaim, UserId = customer.UserId };
+
             _customerDal.Add(customer);
+            _userOperationClaimService.Add(defaultUserClaims);
             return new SuccessResult(Messages.CustomerAdded);
         }
 

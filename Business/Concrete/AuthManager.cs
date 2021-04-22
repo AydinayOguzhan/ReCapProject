@@ -53,6 +53,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<User>(Messages.UserAlreadyExists);
             }
             int defaultFindex = 500;
+            int defaultUserClaim = 2;
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password,out passwordHash,out passwordSalt);
             var user = new User

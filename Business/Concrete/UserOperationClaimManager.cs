@@ -24,7 +24,7 @@ namespace Business.Concrete
             _userOperationClaimDal = userOperationClaimDal;
         }
 
-        [SecuredOperations("admin")]
+        //[SecuredOperations("admin")]
         [TransactionScopeAspect]
         public IResult Add(UserOperationClaim userOperationClaim)
         {
