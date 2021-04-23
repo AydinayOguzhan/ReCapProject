@@ -105,10 +105,9 @@ namespace Business.Concrete
 
         private IResult IsFindexEnough(Rental rental)
         {
-            var userId = _customerService.GetById(rental.CustomerId).Data.UserId;
-            var userFindex = _userService.GetById(userId).Data.Findex;
+            var customer = _customerService.GetById(rental.CustomerId).Data;
             var carFindex = _carService.GetById(rental.CarId).Data.Findex;
-            if (userFindex < carFindex)
+            if (customer.Findex < carFindex)
             {
                 return new ErrorResult();
             }

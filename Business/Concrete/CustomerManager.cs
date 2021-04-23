@@ -33,9 +33,10 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CustomerValidator))]
         public Result Add(Customer customer)
         {
-            int userClaim = 2;
+            int userClaim = 2, defaultFindexPoint = 500;
             UserOperationClaim defaultUserClaims = new UserOperationClaim { OperationClaimId = userClaim, UserId = customer.UserId };
 
+            customer.Findex = defaultFindexPoint;
             _customerDal.Add(customer);
             _userOperationClaimService.Add(defaultUserClaims);
             return new SuccessResult(Messages.CustomerAdded);

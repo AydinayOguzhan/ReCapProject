@@ -25,7 +25,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  Email = u.Email,
                                  FirstName = u.FirstName,
                                  LastName = u.LastName,
-                                 UserId = u.Id
+                                 UserId = u.Id,
+                                 Findex = c.Findex
                              };
                 return result.ToList();
             }
@@ -46,7 +47,8 @@ namespace DataAccess.Concrete.EntityFramework
                                   Email = u.Email,
                                   FirstName = u.FirstName,
                                   LastName = u.LastName,
-                                  UserId = u.Id
+                                  UserId = u.Id,
+                                  Findex = c.Findex
                               }).FirstOrDefault();
                 return result;
             }
@@ -68,7 +70,7 @@ namespace DataAccess.Concrete.EntityFramework
                                   FirstName = u.FirstName,
                                   LastName = u.LastName,
                                   UserId = u.Id,
-                                  Findex = u.Findex
+                                  Findex = c.Findex
                               }).FirstOrDefault();
                 return result;
             }

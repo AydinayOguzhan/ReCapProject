@@ -52,7 +52,6 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>(Messages.UserAlreadyExists);
             }
-            int defaultFindex = 500;
             int defaultUserClaim = 2;
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password,out passwordHash,out passwordSalt);
@@ -64,7 +63,6 @@ namespace Business.Concrete
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = true,
-                Findex = defaultFindex
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
