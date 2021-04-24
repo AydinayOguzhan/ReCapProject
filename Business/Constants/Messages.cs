@@ -69,5 +69,6 @@ namespace Business.Constants
         public static string ThereIsNoPhoto = "Photo notBen de  found";
 
         public static string ClaimAlreadyExist = "This claim is already exist";
+        public static string ClaimCantDelete = "This claim can't be deleted";
     }
 }

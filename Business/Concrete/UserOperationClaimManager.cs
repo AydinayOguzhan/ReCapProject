@@ -57,6 +57,11 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult Delete(UserOperationClaim userOperationClaim)
         {
+            int userClaim = 2;
+            if (userOperationClaim.OperationClaimId == userClaim)
+            {
+                return new ErrorResult(Messages.ClaimCantDelete);
+            }
             _userOperationClaimDal.Delete(userOperationClaim);
             return new SuccessResult(Messages.Successful);
         }
