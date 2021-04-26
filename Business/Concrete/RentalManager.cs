@@ -103,6 +103,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailsByUserId(userId));
         }
 
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByCustomerId(int customerId)
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailsByCustomerId(customerId));    
+        }
+
         private IResult IsFindexEnough(Rental rental)
         {
             var customer = _customerService.GetById(rental.CustomerId).Data;
