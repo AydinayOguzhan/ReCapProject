@@ -23,10 +23,12 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        ICarImageService _carImageServie;
 
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal, ICarImageService carImageService)
         {
             _carDal = carDal;
+            _carImageServie = carImageService;
         }
 
         [SecuredOperations("admin")]
@@ -64,6 +66,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == id), Messages.CarListed);
         }
 
+        [CacheAspect]
         public IDataResult<CarDetailDto> GetDetailsByCarId(int id)
         {
             return new SuccessDataResult<CarDetailDto>(_carDal.GetCarDetailByCarId(id), Messages.CarListed);
@@ -72,7 +75,14 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListed);
+            var result = _carDal.GetCarDetails();
+            for (int i = 0; i < result.Count; i++)
+            {
+                var image = _carImageServie.GetOneImageByCarId(result[i].CarId);
+                result[i].ImagePath = image.Data.ImagePath;
+            }
+
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)

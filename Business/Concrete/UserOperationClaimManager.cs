@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 
 
+//TODO:DeleteAll ekle. İçine dizi alacak. Kurallara uyan bütün elemanları silecek.
 namespace Business.Concrete
 {
     public class UserOperationClaimManager : IUserOperationClaimService

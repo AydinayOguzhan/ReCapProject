@@ -99,6 +99,19 @@ namespace Business.Concrete
         }
 
 
+        public IDataResult<CarImage> GetOneImageByCarId(int carId)
+        {
+            var result = _carImageDal.getByCarIdOne(carId);
+            if (result == null)
+            {
+                CarImage image = new CarImage();
+                image.CarId = carId;
+                image.ImagePath = @"default.jpg";
+                return new SuccessDataResult<CarImage>(image);
+            }
+
+            return new SuccessDataResult<CarImage>(result);
+        }
 
 
         private IResult CheckCarPhotoLimit(int carId)
