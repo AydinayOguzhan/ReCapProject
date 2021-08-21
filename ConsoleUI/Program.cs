@@ -20,11 +20,11 @@ namespace ConsoleUI
             //TODO: ReturnDate must be null if the car hasn't been returned.
 
             //DateTime? returnDate = null;
-            Rental rental = new Rental() { CarId = 3, CustomerId = 1, RentDate = DateTime.Now};
+            //Rental rental = new Rental() { CarId = 3, CustomerId = 1, RentDate = DateTime.Now};
 
-            RentalManager rentalManager = new RentalManager(new EfRentalDal());
-            var result = rentalManager.Add(rental);
-            Console.WriteLine(result.Message);
+            //RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            //var result = rentalManager.Add(rental);
+            //Console.WriteLine(result.Message);
 
             //var result = rentalManager.GetRentalDetailByCarId(2);
             //Console.WriteLine(result.Message);
@@ -34,10 +34,10 @@ namespace ConsoleUI
 
         private static void CustomerTest()
         {
-            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            //CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
 
-            var result = customerManager.GetCustomerDetailByLastName("Aydınay");
-            Console.WriteLine(result.Data.CompanyName + " : " + result.Data.FirstName + " : " + result.Data.LastName);
+            //var result = customerManager.GetCustomerDetailByLastName("Aydınay");
+            //Console.WriteLine(result.Data.CompanyName + " : " + result.Data.FirstName + " : " + result.Data.LastName);
 
             //var result = customerManager.GetAllCustomerDetail();
             //Console.WriteLine(result.Message);
@@ -96,7 +96,7 @@ namespace ConsoleUI
             //Car car1 = new Car() { BrandId = 3, ColorId = 5, ModelYear = 1934, DailyPrice = 150, Description = "Car Description 0" };
             //Car newCar = new Car() { Id = 11,BrandId = 4, ColorId = 6, ModelYear = 1934, DailyPrice = 150, Description = "Updated Car Description 0" };
 
-            CarManager carManager = new CarManager(new EfCarDal());
+            //CarManager carManager = new CarManager(new EfCarDal());
 
             //var result = carManager.Add(car1);
             //Console.WriteLine(result.Message);
@@ -106,15 +106,15 @@ namespace ConsoleUI
             //var deleteResult = carManager.Delete(newCar);
             //Console.WriteLine(deleteResult.Message);
 
-            foreach (var item in carManager.GetAll().Data)
-            {
-                Console.WriteLine($"Id: {item.Id} - Açıklama: {item.Description}");
-            }
+            //foreach (var item in carManager.GetAll().Data)
+            //{
+            //    Console.WriteLine($"Id: {item.Id} - Açıklama: {item.Description}");
+            //}
 
 
-            var car = carManager.GetById(3).Data;
-            Console.WriteLine($"Car Description: {car.Description} - Brand Id: {car.BrandId} - Color Id: {car.ColorId}" +
-                    $" - Daily Price: {car.DailyPrice} - Model Year: {car.ModelYear}");
+            //var car = carManager.GetById(3).Data;
+            //Console.WriteLine($"Car Description: {car.Description} - Brand Id: {car.BrandId} - Color Id: {car.ColorId}" +
+            //        $" - Daily Price: {car.DailyPrice} - Model Year: {car.ModelYear}");
         }
     }
 }

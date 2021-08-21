@@ -40,7 +40,7 @@ namespace WebAPI
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:4200"));
+                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:4200", "31.223.84.143"));
             });
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
@@ -60,6 +60,8 @@ namespace WebAPI
             });
 
             services.AddDependencyResolvers(new CoreModule());
+            
+            //Swagger
             services.AddSwaggerGen();
 
         }
@@ -67,7 +69,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
+            //Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -82,7 +84,7 @@ namespace WebAPI
             //These are middleware
             app.ConfigureCustomExceptionMiddleware();
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "http://localhost:4201").AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "http://localhost:4201", "31.223.84.143").AllowAnyHeader());
 
             app.UseStaticFiles();
 

@@ -38,6 +38,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.Unsuccessful);
             }
+            //Resim ekleme ve silme işlemini cloudinary'e taşı
             var pathResult = FileHelper.Add(file);
             carImage.ImagePath = pathResult.Message;
 

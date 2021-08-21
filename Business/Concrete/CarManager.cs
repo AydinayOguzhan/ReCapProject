@@ -46,10 +46,6 @@ namespace Business.Concrete
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
-            //if (DateTime.Now.Hour == 12)
-            //{
-            //    return new ErrorResult(Messages.MaintenanceTime);
-            //}
             _carDal.Delete(car);
             return new SuccessResult(Messages.CarDeleted);
         }
@@ -72,6 +68,9 @@ namespace Business.Concrete
             return new SuccessDataResult<CarDetailDto>(_carDal.GetCarDetailByCarId(id), Messages.CarListed);
         }
 
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
         [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
@@ -85,16 +84,34 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
 
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandId(brandId), Messages.CarsListed);
+            var result = _carDal.GetCarDetailsByBrandId(brandId);
+            for (int i = 0; i < result.Count; i++)
+            {
+                var image = _carImageServie.GetOneImageByCarId(result[i].CarId);
+                result[i].ImagePath = image.Data.ImagePath;
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
 
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByColorId(colorId), Messages.CarsListed);
+            var result = _carDal.GetCarDetailsByColorId(colorId);
+            for (int i = 0; i < result.Count; i++)
+            {
+                var image = _carImageServie.GetOneImageByCarId(result[i].CarId);
+                result[i].ImagePath = image.Data.ImagePath;
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
 
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsById(int carId)
         {
             //return new SuccessDataResult<List<CarDetailDto>>(CheckIfCarHasPhoto(carId), Messages.CarsListed);
