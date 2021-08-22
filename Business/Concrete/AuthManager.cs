@@ -2,6 +2,7 @@
 using Business.Constants;
 using Core.Aspects.Autofac.Transaction;
 using Core.Entities.Concrete;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.Jwt;
@@ -9,6 +10,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Business.Concrete
 {
@@ -37,6 +39,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
             }
+
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(Messages.PasswordError);
@@ -47,6 +50,12 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
+            var businessRules = BusinessRules.Run(checkIfEmail(userForRegisterDto.Email));
+            if (businessRules != null)
+            {
+                return new ErrorDataResult<User>("Lütfen geçerli bir e-mail adresi kullanınız");
+            }
+
             var result = _userService.GetUserByMail(userForRegisterDto.Email);
             if (!result.Success)
             {
@@ -95,6 +104,19 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.UserAlreadyExists);
             }
             return new SuccessResult();
+        }
+
+        private IResult checkIfEmail(string email)
+        {
+            //var regex = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+            Regex regex = new Regex(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+            //bool isValid = Regex.IsMatch(email, regex, RegexOptions.IgnoreCase);
+            bool isValid = regex.IsMatch(email);
+            if (isValid)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
     }
 }

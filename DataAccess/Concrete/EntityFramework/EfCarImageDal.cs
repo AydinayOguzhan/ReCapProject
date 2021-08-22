@@ -20,7 +20,8 @@ namespace DataAccess.Concrete.EntityFramework
                               {
                                   CarId = carImage.CarId,
                                   Id = carImage.Id,
-                                  ImagePath = carImage.ImagePath
+                                  ImagePath = carImage.ImagePath,
+                                  ImageLink = carImage.ImageLink
                               }).FirstOrDefault();
 
                 return result;

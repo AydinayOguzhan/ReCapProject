@@ -134,7 +134,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  ModelYear = car.ModelYear,
                                  Findex = car.Findex,
                                  ImagePath = image.ImagePath,
-                                 Date = image.Date
+                                 ImageLink = image.ImageLink
                              };
 
                 return result.ToList();

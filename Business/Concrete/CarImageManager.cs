@@ -22,6 +22,7 @@ namespace Business.Concrete
     public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
+        private string _defaultImageLink = "https://res.cloudinary.com/aydinayoguzhan/image/upload/v1629632523/car_images/default.jpg";
 
         public CarImageManager(ICarImageDal carImageDal)
         {
@@ -38,9 +39,10 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.Unsuccessful);
             }
-            //Resim ekleme ve silme işlemini cloudinary'e taşı
-            var pathResult = FileHelper.Add(file);
+            //var pathResult = FileHelper.Add(file);
+            var pathResult = CloudinaryImageHelper.UploadImage(file);
             carImage.ImagePath = pathResult.Message;
+            carImage.ImageLink = pathResult.Data;
 
             _carImageDal.Add(carImage);
             return new SuccessResult(Messages.Successful);
@@ -61,6 +63,7 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult Delete(CarImage carImage)
         {
+            //Silme işlemini cloudinary üzerinde yap
             var result = _carImageDal.Get(c => c.Id == carImage.Id);
             FileHelper.Delete(result.ImagePath);
             _carImageDal.Delete(carImage);
@@ -74,7 +77,8 @@ namespace Business.Concrete
             if (result.Count <= 0)
             {
                 List<CarImage> Cimage = new List<CarImage>();
-                Cimage.Add(new CarImage { CarId = id, ImagePath = @"default.jpg" });
+                //Cimage.Add(new CarImage { CarId = id, ImagePath = @"default.jpg" });
+                Cimage.Add(new CarImage { CarId = id, ImagePath = "default", ImageLink = _defaultImageLink });
                 return new SuccessDataResult<List<CarImage>>(Cimage);
             }
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.Id == id));
@@ -87,7 +91,8 @@ namespace Business.Concrete
             if (result.Count <= 0)
             {
                 List<CarImage> Cimage = new List<CarImage>();
-                Cimage.Add(new CarImage { CarId = id, ImagePath = @"default.jpg" });
+                //Cimage.Add(new CarImage { CarId = id, ImagePath = @"default.jpg" });
+                Cimage.Add(new CarImage { CarId = id, ImagePath = "default", ImageLink = _defaultImageLink });
                 return new SuccessDataResult<List<CarImage>>(Cimage);
             }
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == id));
@@ -107,7 +112,9 @@ namespace Business.Concrete
             {
                 CarImage image = new CarImage();
                 image.CarId = carId;
-                image.ImagePath = @"default.jpg";
+                //image.ImagePath = @"default.jpg";
+                image.ImagePath = "default";
+                image.ImageLink = _defaultImageLink;
                 return new SuccessDataResult<CarImage>(image);
             }
 

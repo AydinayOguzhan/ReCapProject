@@ -71,7 +71,7 @@ namespace Business.Concrete
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
-        [CacheAspect]
+        //[CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             var result = _carDal.GetCarDetails();
@@ -79,12 +79,12 @@ namespace Business.Concrete
             {
                 var image = _carImageServie.GetOneImageByCarId(result[i].CarId);
                 result[i].ImagePath = image.Data.ImagePath;
+                result[i].ImageLink = image.Data.ImageLink;
             }
 
             return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
 
-        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
         {
             var result = _carDal.GetCarDetailsByBrandId(brandId);
@@ -92,11 +92,11 @@ namespace Business.Concrete
             {
                 var image = _carImageServie.GetOneImageByCarId(result[i].CarId);
                 result[i].ImagePath = image.Data.ImagePath;
+                result[i].ImageLink = image.Data.ImageLink;
             }
             return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
 
-        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
         {
             var result = _carDal.GetCarDetailsByColorId(colorId);
@@ -104,6 +104,7 @@ namespace Business.Concrete
             {
                 var image = _carImageServie.GetOneImageByCarId(result[i].CarId);
                 result[i].ImagePath = image.Data.ImagePath;
+                result[i].ImageLink = image.Data.ImageLink;
             }
             return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarsListed);
         }
@@ -111,20 +112,17 @@ namespace Business.Concrete
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
 
-        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailsById(int carId)
         {
             //return new SuccessDataResult<List<CarDetailDto>>(CheckIfCarHasPhoto(carId), Messages.CarsListed);
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsById(carId));
         }
 
-        [CacheAspect]
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id), Messages.CarsListed);
         }
 
-        [CacheAspect]
         public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id), Messages.CarsListed);
@@ -149,7 +147,7 @@ namespace Business.Concrete
                 var newCarDetailDto = _carDal.GetCarDetails(c => c.CarId == carId).FirstOrDefault();
                 return new List<CarDetailDto> { new CarDetailDto {
                     CarId = newCarDetailDto.CarId,BrandName = newCarDetailDto.BrandName, CarDescription = newCarDetailDto.CarDescription,
-                    ColorName = newCarDetailDto.ColorName, DailyPrice = newCarDetailDto.DailyPrice, Date = newCarDetailDto.Date,
+                    ColorName = newCarDetailDto.ColorName, DailyPrice = newCarDetailDto.DailyPrice, ImageLink = newCarDetailDto.ImageLink,
                     ModelYear = newCarDetailDto.ModelYear, ImagePath = path
                 } };
             }
