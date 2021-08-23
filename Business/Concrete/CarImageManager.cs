@@ -63,9 +63,13 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult Delete(CarImage carImage)
         {
-            //Silme işlemini cloudinary üzerinde yap
             var result = _carImageDal.Get(c => c.Id == carImage.Id);
-            FileHelper.Delete(result.ImagePath);
+            //FileHelper.Delete(result.ImagePath);
+            var deleteResult = CloudinaryImageHelper.DeleteImage(carImage.ImagePath);
+            if (!deleteResult.Success)
+            {
+                return new ErrorResult(Messages.ImageNotFound);
+            }
             _carImageDal.Delete(carImage);
             return new SuccessResult(Messages.Successful);
         }

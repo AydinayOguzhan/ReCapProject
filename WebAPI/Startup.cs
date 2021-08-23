@@ -40,7 +40,7 @@ namespace WebAPI
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:4200", "http://carrental.aydinayoguzhan.com"));
+                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:4200", "31.223.84.143", "94.102.1.198", "https://carrental.aydinayoguzhan.com"));
             });
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
@@ -84,7 +84,7 @@ namespace WebAPI
             //These are middleware
             app.ConfigureCustomExceptionMiddleware();
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "http://localhost:4201", "http://carrental.aydinayoguzhan.com").AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "http://localhost:4201", "31.223.84.143", "94.102.1.198", "https://carrental.aydinayoguzhan.com").AllowAnyHeader());
 
             app.UseStaticFiles();
 

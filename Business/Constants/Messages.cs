@@ -70,5 +70,7 @@ namespace Business.Constants
 
         public static string ClaimAlreadyExist = "This claim is already exist";
         public static string ClaimCantDelete = "This claim can't be deleted";
+
+        public static string ImageNotFound = "Image not found";
     }
 }
